@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mobility-data-analysis"
+version = "0.1.0"
+description = "Analyze mobility data with trip detection, classification, and visualization"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    {name = "Sammy", email = "s.breen@eweb.de"}
+]
+
+dependencies = [
+    "pandas>=1.3.0",
+    "numpy>=1.21.0",
+    "geopandas>=0.10.0",
+    "shapely>=1.7.0",
+    "folium>=0.12.0",
+    "scikit-learn>=1.0.0",
+    "matplotlib>=3.3.0",
+    "seaborn>=0.11.0",
+    "geopy>=2.1.0",
+    "requests>=2.25.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.12.0",
+    "black>=22.0.0",
+    "isort>=5.10.0",
+    "flake8>=3.9.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+
+[tool.black]
+line-length = 100
+target-version = ["py39", "py310", "py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]

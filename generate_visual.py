@@ -3,20 +3,21 @@ import os
 import pickle
 import geopandas as gpd
 
+from src.visualize import plotrouteperday, plot_acc_lin, folium_plot
+from src.trip_detect import get_popular_places, trip_detector
+
 current_directory = os.path.dirname(os.path.abspath(__file__))
 functions_directory = "functions"
 full_path = os.path.join(current_directory, functions_directory)
 sys.path.append(full_path)
 
-from preprocessing import preprocess, mapmatch, filtering
-from visualize import plotrouteperday, plot_acc_lin, folium_plot
-from trip_detect import get_popular_places, trip_detector
 
-with open("gdf1.pkl", "rb") as f:
+with open("data/processed/User1/data_preprocessed.pickle", "rb") as f:
     gdf_1 = pickle.load(f)
-with open("gdf2.pkl", "rb") as f:
+with open("data/processed/User2/data_preprocessed.pickle", "rb") as f:
     gdf_2 = pickle.load(f)
 
+print(gdf_1.head())
 
 m = folium_plot()
 m.add_to_folium(gdf_1)
