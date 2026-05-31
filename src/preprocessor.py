@@ -172,7 +172,7 @@ def delete_rows_with_unchanged_geometry(gdf):
 
         if current_geometry == last_geometry:
             unchanged_count += 1
-            if check == False:
+            if not check:
                 check = True
             else:
                 temp_rows_to_delete.append(index)

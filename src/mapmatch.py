@@ -24,7 +24,6 @@ def mapmatch(df: pd.DataFrame):
     )
     # Convert the output to a string and remove all apostrophes
     time_list = list(time_list)
-    time_list_str = str(list(time_list)).replace("'", "")
 
     # splitting list into 4 equally long lists to ensure stability
     coordinate_list_split, time_list_split = split_lists(coordinate_list, time_list)

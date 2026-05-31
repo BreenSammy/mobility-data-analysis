@@ -1,7 +1,7 @@
 """Classification module with data manager integration"""
 
 from pathlib import Path
-from typing import Optional, Tuple, List, Dict
+from typing import Optional, Dict
 import logging
 import pickle
 

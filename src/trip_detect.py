@@ -88,8 +88,6 @@ def polygons_contain_geometry(polygons, geometry):
 
 def trip_detector(my_mobility_data, gdf_hotspot_polygons):
     flag_start_track = False
-    current_start_polygon = -1
-    current_end_polygon = -1
     flag_left_start_polygon = None
     trips = []
     counter_general = 0
@@ -98,22 +96,19 @@ def trip_detector(my_mobility_data, gdf_hotspot_polygons):
         is_inside, inside_idx = polygons_contain_geometry(gdf_hotspot_polygons, row)
 
         if is_inside and not flag_start_track:
-            current_start_polygon = None
             flag_left_start_polygon = None
             flag_start_track = None
             idx_start = None
-            current_start_polygon = inside_idx
             flag_left_start_polygon = False
             flag_start_track = True
             idx_start = counter_general
 
-        if is_inside == False and flag_left_start_polygon == False:
+        if not is_inside and not flag_left_start_polygon:
             flag_left_start_polygon = True
             idx_start = counter_general - 1
 
-        if is_inside and flag_start_track and flag_left_start_polygon == True:
+        if is_inside and flag_start_track and not flag_left_start_polygon:
             if row.speed_corr < 2:
-                current_end_polygon = inside_idx
                 flag_start_track = False
                 idx_end = counter_general
 
