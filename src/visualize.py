@@ -4,6 +4,44 @@ from shapely.geometry import LineString
 import folium
 import os
 import numpy as np
+from pathlib import Path
+
+
+from src.trip_detect import get_popular_places, trip_detector
+
+
+def create_plots(gdf, path: Path):
+
+    m = folium_plot()
+    m.add_to_folium(gdf)
+    m.show_map()
+    m.save_map(path / "gdf_total.html")
+
+    gdf_hotspots_polygons = get_popular_places(gdf)
+
+    # plot polygons_1
+    m = folium_plot()
+    m.add_to_folium(gdf)
+
+    for idx, gdf_poly in enumerate(gdf_hotspots_polygons):
+        tooltip = "Nr: {}. n_visits: {}".format(idx, gdf_poly["n_visits"][0])
+        m.add_geojson_to_folium(gdf_poly.to_crs(epsg="4326").to_json(), tooltip)
+
+    m.save_map(path / "polygons_gdf_1.html")
+    m.show_map()
+
+    # generate trips
+    trips = trip_detector(gdf, gdf_hotspots_polygons)
+
+    m = folium_plot()
+    m.add_many_to_folium(trips)
+
+    for idx, gdf_poly in enumerate(gdf_hotspots_polygons):
+        tooltip = "Nr: {}. n_visits: {}".format(idx, gdf_poly["n_visits"][0])
+        m.add_geojson_to_folium(gdf_poly, tooltip)
+
+    m.save_map(path / "trips.html")
+    m.show_map()
 
 
 def plotrouteperday(gdf: pd.DataFrame, folder):

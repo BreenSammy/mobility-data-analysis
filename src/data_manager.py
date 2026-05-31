@@ -23,7 +23,6 @@ class UserDataManager:
         (self.processed_data_dir).mkdir(parents=True, exist_ok=True)
 
         for subdir in [
-            "features",
             "visualizations",
             "predictions",
         ]:
@@ -47,12 +46,19 @@ class UserDataManager:
         trips.to_csv(path, index=False)
         return path
 
-    def load_dataframe(self, category: str, filename: str) -> pd.DataFrame:
-        path = self.get_output_path(category, filename)
-        return pd.read_csv(path)
+    def save_prediction_results(self, df: pd.DataFrame):
+        path = self.results_dir / "predictions" / "trip_classification.csv"
+        df.to_csv(path, index=False)
+        return path
+
+    def get_preprocessed_data_path(self) -> Path:
+        return self.processed_data_dir / "data_preprocessed.pickle"
 
     def get_trip_times_path(self) -> Path:
         return self.raw_data_dir / "trip_times.csv"
+
+    def get_trips_from_data_path(self) -> Path:
+        return self.processed_data_dir / "trips_from_data.csv"
 
     def get_day_paths(self) -> list[Path]:
         """Get all day directories for this user"""
@@ -63,3 +69,15 @@ class UserDataManager:
                 if p.is_dir() and not p.name.startswith(".")
             ]
         )
+
+    def is_user_processed(self) -> bool:
+        """Check if the processed data directory is populated with expected files.
+
+        Returns True if all key processed data files exist.
+        """
+        required_files = [
+            self.get_preprocessed_data_path(),
+            self.get_trip_times_path(),
+            self.get_trips_from_data_path(),
+        ]
+        return all(file.exists() for file in required_files)

@@ -1,13 +1,13 @@
 import geopandas as gpd
 import numpy as np
-from geopy import distance
 import geopy
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
-from shapely.geometry.polygon import Polygon
-from shapely.geometry import box, Point
+from shapely.geometry import Point
 
 from src.calculate_distance import calculate_distance
+
+MINIMUM_TRIP_LENGTH_KM = 0.1
 
 
 def total_distance(my_mobility_data):
@@ -74,13 +74,6 @@ def get_popular_places(
     return gdf_hotspots_polygons
 
 
-# find trips between Hotspots
-
-import datetime
-import pytz
-import time
-
-
 def polygons_contain_geometry(polygons, geometry):
     if not isinstance(polygons, list):
         raise "ERROR: We need lists of gdf containing polygons!"
@@ -91,9 +84,6 @@ def polygons_contain_geometry(polygons, geometry):
             return is_inside, idx
     else:
         return False, -1
-
-
-MINIMUM_TRIP_LENGTH_KM = 0.1
 
 
 def trip_detector(my_mobility_data, gdf_hotspot_polygons):
