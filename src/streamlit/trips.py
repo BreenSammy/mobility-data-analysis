@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import numpy as np
 import folium
 import pandas as pd
@@ -7,12 +5,7 @@ import streamlit as st
 from streamlit_folium import st_folium
 
 from src.streamlit.components.select_user import select_user
-
-st.write("Here's our first attempt at using data to create a table:")
-base_data_dir = Path("data")
-processed_data_dir = base_data_dir / "processed"
-results_dir = Path("results")
-users = ["User1", "User2"]
+from src.streamlit.components.create_map import create_map
 
 data_manager = select_user()
 trips = pd.read_csv(data_manager.get_trips_from_data_path())
@@ -23,13 +16,7 @@ trajectory = np.array(list(zip(df["geometry"].y, df["geometry"].x)))
 
 center_start = np.mean(trajectory, axis=0).tolist()
 ZOOM_START = 8
-if "center" not in st.session_state:
-    st.session_state["center"] = center_start
-
-if "zoom" not in st.session_state:
-    st.session_state["zoom"] = ZOOM_START
-
-m = folium.Map(location=center_start, zoom_start=ZOOM_START)
+m = create_map(center_start, ZOOM_START)
 fg = folium.FeatureGroup(name="trajectories")
 
 fg.add_child(folium.PolyLine(trajectory, weight=4.5, opacity=1, tooltip="Trip Path"))
