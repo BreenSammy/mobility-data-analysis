@@ -13,16 +13,18 @@ import matplotlib.pyplot as plt
 
 st.title("Mobility Data Analysis")
 
-
 st.set_page_config(
     page_title="Hello",
     page_icon="👋",
 )
 
-raw_data_page = st.Page("raw_data.py", title="Raw data", icon=":material/add_circle:")
-delete_page = st.Page("delete.py", title="Delete entry", icon=":material/delete:")
+raw_data_page = st.Page("raw_data.py", title="Raw data", icon=":material/data_array:")
+trips_page = st.Page("trips.py", title="Trips", icon=":material/trip:")
+ml_page = st.Page("ml.py", title="ML", icon=":material/experiment:")
 
-pg = st.navigation([raw_data_page, delete_page])
-st.set_page_config(page_title="Data manager", page_icon=":material/edit:")
+pg = st.navigation([raw_data_page, trips_page, ml_page])
+st.set_page_config(
+    page_title="Mobility Data Analysis", page_icon=":material/pin_road:", layout="wide"
+)
 pg.run()
 # st.sidebar.success("")

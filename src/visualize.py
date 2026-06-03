@@ -92,7 +92,9 @@ class folium_plot:
 
         self.width = kwargs.get("width", "100%")
         self.height = kwargs.get("height", "600")
-        self.location = kwargs.get("location", [50.8, -0.1])
+        self.location = kwargs.get(
+            "location",
+        )
         self.f = folium.Figure(width=self.width, height=self.height)
         self.m = folium.Map(location=self.location, zoom_start=11).add_to(self.f)
 
