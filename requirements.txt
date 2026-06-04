@@ -8,3 +8,5 @@ matplotlib>=3.3.0
 seaborn>=0.11.0
 geopy>=2.1.0
 requests>=2.25.0
+streamlit_folium
+-e .

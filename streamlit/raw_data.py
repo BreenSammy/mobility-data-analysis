@@ -3,17 +3,17 @@ from pathlib import Path
 
 import streamlit as st
 import pandas as pd
-from src.streamlit.components.select_user import select_user
+from components.select_user import select_user
 
 
 st.title("Raw data")
 
 data_manager = select_user()
 
-paths: list[Path] = data_manager.get_day_paths()
-dates: list[str] = [
-    datetime.strptime(path.name, "%d%m%y").strftime("%Y-%m-%d") for path in paths
-]
+df = pd.read_pickle(data_manager.processed_data_dir / "data_preprocessed.pickle")
+
+#paths: list[Path] = data_manager.get_day_paths()
+dates = df.index.strftime('%Y-%m-%d').unique().tolist()
 
 selected_date = st.selectbox("Choose date", dates)
 
@@ -39,7 +39,6 @@ selected_sensor = st.selectbox("Choose sensor", list(options.keys()))
 selected_columns = options.get(selected_sensor, []).get("columns", [])
 unit = options.get(selected_sensor, []).get("unit", "")
 
-df = pd.read_pickle(data_manager.processed_data_dir / "data_preprocessed.pickle")
 
 
 # Filter by selected date

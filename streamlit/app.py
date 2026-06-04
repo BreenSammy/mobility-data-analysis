@@ -1,4 +1,5 @@
 from datetime import datetime
+import zipfile
 
 import matplotlib
 
@@ -10,6 +11,21 @@ import folium
 from streamlit_folium import st_folium
 import numpy as np
 import matplotlib.pyplot as plt
+
+from os import path
+import urllib.request
+
+if path.exists("data/processed.zip"):
+    pass
+else:
+    with st.spinner("Please wait while we are downloading the dataset."):
+        urllib.request.urlretrieve(
+            "https://github.com/BreenSammy/mobility-data-analysis/releases/download/data/processed.zip", "data/processed.zip"
+        )
+        with zipfile.ZipFile("data/processed.zip", 'r') as zip_ref:
+            zip_ref.extractall("data")
+    st.success("Dataset has been downloaded !")
+
 
 st.title("Mobility Data Analysis")
 

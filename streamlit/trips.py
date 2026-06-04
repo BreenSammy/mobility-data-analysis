@@ -10,8 +10,8 @@ from geopy.geocoders import Nominatim
 
 from streamlit_folium import st_folium
 
-from src.streamlit.components.create_map import create_map
-from src.streamlit.components.select_user import select_user
+from components.create_map import create_map
+from components.select_user import select_user
 from src.trips.trip_detect import get_popular_places, trip_detector
 from src.data_manager import UserDataManager
 
