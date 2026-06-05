@@ -2,9 +2,15 @@
 
 A comprehensive Python project for analyzing GPS mobility data with trip detection, transportation mode classification, and interactive visualization.
 
+<a href="https://mobilitydataanalysis.streamlit.app/">
+  <img src="assets/streamlit-logo.png" width="250" alt="Open in Streamlit">
+</a>
+
 ## Overview
 
 This project processes raw GPS trajectory data from mobile devices to identify individual trips, classify transportation modes, and visualize movement patterns. It includes machine learning models for automated classification and a Streamlit-based web interface for interactive exploration.
+
+![map](assets/map.png)
 
 ## Features
 
