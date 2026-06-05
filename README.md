@@ -1,91 +1,83 @@
-# MDA Praktikum
+# Mobility Data Analysis
 
-# Dataset
+A comprehensive Python project for analyzing GPS mobility data with trip detection, transportation mode classification, and interactive visualization.
 
-GPS log files of two users, labeled trajectories with transportation mode
+## Overview
 
-## 00inf.txt
+This project processes raw GPS trajectory data from mobile devices to identify individual trips, classify transportation modes, and visualize movement patterns. It includes machine learning models for automated classification and a Streamlit-based web interface for interactive exploration.
 
-Metdata file comprising information about the recording
+## Features
 
-| Line   | Description          | Unit     |
-|--------|----------------------|----------|
-| 1      | User ID              | -        |
-| 2      | First sample time    | ms       |
-| 3      | Last sample time     | ms       |
-| 4      | Recording start date | -        |
-| 5      | Recording length     | ms       |
-| 6      | Recording ID         | -        |
+- **Trip Detection**: Automatically identifies individual trips from continuous GPS data using temporal and spatial thresholds
+- **Transportation Mode Classification**: Predicts whether trips are by car, bike, or walking using scikit-learn models
+- **Data Visualization**: Interactive maps, temporal analysis, and trip statistics
+- **Multi-User Support**: Process and analyze data for multiple users independently
+- **Streamlit Dashboard**: Interactive web interface for exploration and analysis
+- **Feature Engineering**: Extracts relevant features for machine learning (speed, acceleration, turning angles, etc.)
 
-## Torso_Location.txt
+## Installation
 
-| Column | Description                                          | Unit     |
-|--------|------------------------------------------------------|----------|
-| 1      | Time                                                 | ms       |
-| 2      | Ignore                                               | -        |
-| 3      | Ignore                                               | -        |
-| 4      | Accuracy of this location (radius of 68% confidence) | m        |
-| 5      | Latitude                                             | degrees  |
-| 6      | Longitude                                            | degrees  |
-| 7      | Altitude                                             | m        |
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/BreenSammy/mobility-data-analysis.git
+   cd mobility-data-analysis
+   ```
 
-## Torso_Motion.txt
+2. **Create a virtual environment** (recommended)
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-GPS data
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-| Column | Description                   | Unit    |
-|--------|-------------------------------|---------|
-| 1      | Time                          | ms      |
-| 2      | Acceleration X                | m/s²    |
-| 3      | Acceleration Y                | m/s²    |
-| 4      | Acceleration Z                | m/s²    |
-| 5      | Gyroscope X                   | rad/s   |
-| 6      | Gyroscope Y                   | rad/s   |
-| 7      | Gyroscope Z                   | rad/s   |
-| 8      | Magnetometer X                | μT      |
-| 9      | Magnetometer Y                | μT      |
-| 10     | Magnetometer Z                | μT      |
-| 11     | Orientation w                 | -       |
-| 12     | Orientation X                 | -       |
-| 13     | Orientation Y                 | -       |
-| 14     | Orientation Z                 | -       |
-| 15     | Gravity X                     | m/s²    |
-| 16     | Gravity Y                     | m/s²    |
-| 17     | Gravity Z                     | m/s²    |
-| 18     | Linear acceleration X         | m/s²    |
-| 19     | Linear acceleration Y         | m/s²    |
-| 20     | Linear acceleration Z         | m/s²    |
-| 21     | Pressure                      | hPa     |
-| 22     | Altitude (derived from pressure) | m    |
+4. **Install the package in development mode**
+   ```bash
+   pip install -e .
+   ```
 
+## Usage
 
-## labels_track_main.txt
+### Interactive Dashboard
 
-| Column | Description                   | Unit    |
-|--------|-------------------------------|---------|
-| 1      | Label start time              | ms      |
-| 2      | Label end time                | ms      |
-| 3      | Activity label                | int     |
+Launch the Streamlit dashboard to explore data and results:
 
-### Labels 
+```bash
+streamlit run streamlit/app.py
+```
 
-| Label | Description           |
-|-------|-----------------------|
-| 0     | Still; Stand; Outside |
-| 1     | Still; Stand; Inside  |
-| 2     | Still; Sit; Outside   |
-| 3     | Still; Sit; Inside    |
-| 4     | Walking; Outside      |
-| 5     | Walking; Inside       |
-| 6     | Run                   |
-| 7     | Bike                  |
-| 8     | Car; Driver           |
-| 9     | Car; Passenger        |
-| 10    | Bus; Stand            |
-| 11    | Bus; Sit              |
-| 12    | Bus; Up; Stand        |
-| 13    | Bus; Up; Sit          |
-| 14    | Train; Stand          |
-| 15    | Train; Sit            |
-| 16    | Subway; Stand         |
-| 17    | Subway; Sit           |
+The dashboard provides three main sections:
+- **Raw Data**: Explore original GPS traces and sensor data
+- **Trips**: View detected trips and trip statistics
+- **ML**: Review classification results and model predictions
+
+### Running the Classification Pipeline
+
+Process raw data and classify trips:
+
+```bash
+python scripts/run_classification.py
+```
+
+### Data Structure
+
+#### Raw Data Format
+
+Input data should be organized by user and recording date:
+```
+data/raw/User{N}/{DDMMYY}/
+  ├── 00inf.txt              # Recording metadata
+  ├── Torso_Location.txt     # GPS coordinates
+  ├── Torso_Motion.txt       # Acceleration data
+  └── labels_track_main.txt  # Ground truth labels
+```
+
+#### Processed Data
+
+Processed output includes:
+- `trips_from_data.csv`: Detected trips with coordinates and timestamps
+- `trip_times_from_data.csv`: Trip start/end times and statistics
+- `trip_classification.csv`: Transportation mode predictions
